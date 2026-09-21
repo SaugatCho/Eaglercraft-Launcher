@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eaglercraft Launcher</title>
+    <style>
+        :root {
+            --bg-color: #0b0c10;
+            --panel-bg: #12141d;
+            --card-bg: #181a26;
+            --card-border: #232738;
+            --accent-purple: #8b5cf6;
+            --accent-purple-hover: #7c3aed;
+            --text-primary: #ffffff;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            padding: 24px;
+            min-height: 100vh;
+        }
+
+        /* Top Navigation Bar */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #10b981;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .brand-text h1 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .brand-text p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .action-btn:hover {
+            color: var(--text-primary);
+            border-color: var(--accent-purple);
+        }
+
+        /* Layout Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 24px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Drop Area */
+        .drop-zone-container {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .drop-zone {
+            border: 2px dashed #2d3248;
+            border-radius: 8px;
+            padding: 28px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .drop-zone:hover {
+            border-color: var(--accent-purple);
+        }
+
+        .drop-icon {
+            width: 48px;
+            height: 48px;
+            background-color: #10b981;
+            border-radius: 8px;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .drop-zone p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            max-width: 450px;
+            margin: 0 auto 4px;
+        }
+
+        .drop-zone .subtext {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Main Content Cards */
+        .content-panel {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .client-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 110px;
+        }
+
+        .client-card h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .client-card p {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .launch-btn {
+            background-color: var(--accent-purple);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            padding: 6px 0;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            display: block;
+            transition: background 0.2s;
+        }
+
+        .launch-btn:hover {
+            background-color: var(--accent-purple-hover);
+        }
+
+        /* Right Sidebar - Servers */
+        .sidebar {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px;
+            height: fit-content;
+        }
+
+        .server-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .server-item {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .server-info h4 {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .server-info p {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-family: monospace;
+            margin-top: 2px;
+        }
+
+        .server-meta {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .version-tag {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .copy-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .copy-btn:hover {
+            color: var(--text-primary);
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="brand">
+            <div class="logo-icon">🟩</div>
+            <div class="brand-text">
+                <h1>Eaglercraft</h1>
+                <p>Browser Minecraft Launcher</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="action-btn">🎶 Ambient Music: OFF</button>
+            <button class="action-btn">🔊 Sound: ON</button>
+            <button class="action-btn">🌙</button>
+            <button class="action-btn">GitHub</button>
+        </div>
+    </header>
+
+    <div class="dashboard-grid">
+        <!-- Main Launch Column -->
+        <div class="main-content">
+            
+            <!-- Drag & Drop Upload Zone -->
+            <div class="drop-zone-container">
+                <div class="section-title">📁 Local HTML Client Launcher</div>
+                <div class="drop-zone" onclick="document.getElementById('file-input').click()">
+                    <div class="drop-icon">💾</div>
+                    <p>Click here or drag from your files select the file that starts with eaglercraft, it could be a file in google drive or in a folder in google drive. If it doesnt launch press launch game.</p>
+                    <span class="subtext">(Sometimes it doesnt work lol)</span>
+                    <input type="file" id="file-input" accept=".html">
+                </div>
+            </div>
+
+            <!-- Main Official Game Versions -->
+            <div class="content-panel">
+                <div class="section-title">🎮 Game Versions & Protocols</div>
+                <div class="card-grid">
+                    <div class="client-card">
+                        <div>
+                            <h3>Eaglercraft 1.5.2</h3>
+                            <p>Classic lightweight release.</p>
+                        </div>
+                        <a href="1.5.2.html" class="launch-btn">Launch</a>
+                    </div>
+                    <div class="client-card">
+                        <div>
+                            <h3>EaglercraftX 1.8.8</h3>
+                            <p>Standard WebGL build.</p>
+                        </div>
+                        <a href="1.8.8.html" class="launch-btn">Launch</a>
+                    </div>
+                    <div class="client-card">
+                        <div>
+                            <h3>Eaglercraft 1.12.2</h3>
+                            <p>WASM modern port.</p>
+                        </div>
+                        <a href="1.12.2.html" class="launch-btn">Launch</a>
+                    </div>
+                    <div class="client-card">
+                        <div>
+                            <h3>Eaglercraft 1.14</h3>
+                            <p>Experimental Dev Workspace.</p>
+                        </div>
+                        <a href="1.14.html" class="launch-btn">Launch</a>
+                    </div>
+                    <div class="client-card">
+                        <div>
+                            <h3>Eaglercraft 1.16</h3>
+                            <p>Server Protocol Workspace.</p>
+                        </div>
+                        <a href="1.16.html" class="launch-btn">Launch</a>
+                    </div>
+                    <div class="client-card">
+                        <div>
+                            <h3>Eaglercraft Indev</h3>
+                            <p>Early Minecraft port build.</p>
+                        </div>
+                        <a href="indev.html" class="launch-btn">Launch</a>
+                    </div>
+                    <div class="client-card">
+                        <div>
+                            <h3>Eaglercraft Beta</h3>
+                            <p>Offline singleplayer release.</p>
+                        </div>
+                        <a href="beta.html" class="launch-btn">Launch</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom Clients -->
+            <div class="content-panel">
+                <div class="section-title">⚡ Custom Clients & Utilities</div>
+                <div class="card-grid">
+                    <div class="client-card">
+                        <div>
+                            <h3>DeathClient</h3>
+                            <p>Hybrid/utility client for 1.8.8.</p>
+                        </div>
+                        <a href="deathclient.html" class="launch-btn">Launch</a>
+                    </div>
+                    <div class="client-card">
+                        <div>
+                            <h3>Astra / Astroine</h3>
+                            <p>Optimized performance client.</p>
+                        </div>
+                        <a href="astra.html" class="launch-btn">Launch</a>
+                    </div>
+                    <div class="client-card">
+                        <div>
+                            <h3>Resent Client</h3>
+                            <p>Feature-rich utility client.</p>
+                        </div>
+                        <a href="resent.html" class="launch-btn">Launch</a>
+                    </div>
+                    <div class="client-card">
+                        <div>
+                            <h3>Pixel Client</h3>
+                            <p>Lightweight PvP client.</p>
+                        </div>
+                        <a href="pixel.html" class="launch-btn">Launch</a>
+                    </div>
+                    <div class="client-card">
+                        <div>
+                            <h3>Tuff Client</h3>
+                            <p>Custom HUD enhancements.</p>
+                        </div>
+                        <a href="tuff.html" class="launch-btn">Launch</a>
+                    </div>
+                    <div class="client-card">
+                        <div>
+                            <h3>Precision Client</h3>
+                            <p>High FPS performance build.</p>
+                        </div>
+                        <a href="precision.html" class="launch-btn">Launch</a>
+                    </div>
+                    <div class="client-card">
+                        <div>
+                            <h3>Modern Client</h3>
+                            <p>Modernized UI overlay.</p>
+                        </div>
+                        <a href="modern.html" class="launch-btn">Launch</a>
+                    </div>
+                    <div class="client-card">
+                        <div>
+                            <h3>Starlike Client</h3>
+                            <p>Clean design & visuals.</p>
+                        </div>
+                        <a href="starlike.html" class="launch-btn">Launch</a>
+                    </div>
+                    <div class="client-card">
+                        <div>
+                            <h3>Galactic Client</h3>
+                            <p>Space-themed interface.</p>
+                        </div>
+                        <a href="galactic.html" class="launch-btn">Launch</a>
+                    </div>
+                    <div class="client-card">
+                        <div>
+                            <h3>Aero Client</h3>
+                            <p>Ultra-fast performance build.</p>
+                        </div>
+                        <a href="aero.html" class="launch-btn">Launch</a>
+                    </div>
+                    <div class="client-card">
+                        <div>
+                            <h3>EB Client</h3>
+                            <p>Enhanced Bedrock features.</p>
+                        </div>
+                        <a href="ebclient.html" class="launch-btn">Launch</a>
+                    </div>
+                    <div class="client-card">
+                        <div>
+                            <h3>EaglerFORGE</h3>
+                            <p>Modding API client platform.</p>
+                        </div>
+                        <a href="eaglerforge.html" class="launch-btn">Launch</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Server Sidebar -->
+        <div class="sidebar">
+            <div class="section-title">Servers</div>
+            <div class="server-list">
+                <div class="server-item">
+                    <div class="server-info">
+                        <h4>Aethernet</h4>
+                        <p>wss://aethernet.kro.kr</p>
+                    </div>
+                    <div class="server-meta">
+                        <span class="version-tag">1.8.8</span>
+                        <button class="copy-btn" onclick="navigator.clipboard.writeText('wss://aethernet.kro.kr')">📋</button>
+                    </div>
+                </div>
+                <div class="server-item">
+                    <div class="server-info">
+                        <h4>Asapixel Network</h4>
+                        <p>wss://asspixel.net</p>
+                    </div>
+                    <div class="server-meta">
+                        <span class="version-tag">1.8.8</span>
+                        <button class="copy-btn" onclick="navigator.clipboard.writeText('wss://asspixel.net')">📋</button>
+                    </div>
+                </div>
+                <div class="server-item">
+                    <div class="server-info">
+                        <h4>ArchMC</h4>
+                        <p>wss://arch.mc</p>
+                    </div>
+                    <div class="server-meta">
+                        <span class="version-tag">1.8.8</span>
+                        <button class="copy-btn" onclick="navigator.clipboard.writeText('wss://arch.mc')">📋</button>
+                    </div>
+                </div>
+                <div class="server-item">
+                    <div class="server-info">
+                        <h4>Voidsent MC</h4>
+                        <p>wss://mc.voidsent.net</p>
+                    </div>
+                    <div class="server-meta">
+                        <span class="version-tag">1.8.8</span>
+                        <button class="copy-btn" onclick="navigator.clipboard.writeText('wss://mc.voidsent.net')">📋</button>
+                    </div>
+                </div>
+                <div class="server-item">
+                    <div class="server-info">
+                        <h4>BagelSMP</h4>
+                        <p>wss://top.bagelsmp.com</p>
+                    </div>
+                    <div class="server-meta">
+                        <span class="version-tag">1.8.8</span>
+                        <button class="copy-btn" onclick="navigator.clipboard.writeText('wss://top.bagelsmp.com')">📋</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Local File Drag & Drop Engine
+        const dropZone = document.querySelector('.drop-zone');
+        const fileInput = document.getElementById('file-input');
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) launchLocalFile(file);
+        });
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = '#8b5cf6';
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.style.borderColor = '#2d3248';
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = '#2d3248';
+            const file = e.dataTransfer.files[0];
+            if (file && file.name.endsWith('.html')) {
+                launchLocalFile(file);
+            }
+        });
+
+        function launchLocalFile(file) {
+            const url = URL.createObjectURL(file);
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>
