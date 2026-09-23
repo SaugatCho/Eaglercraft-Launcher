@@ -138,18 +138,6 @@
             border-color: var(--accent-purple);
         }
 
-        .drop-icon {
-            width: 48px;
-            height: 48px;
-            background-color: #10b981;
-            border-radius: 8px;
-            margin: 0 auto 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
-
         .drop-zone p {
             font-size: 13px;
             color: var(--text-secondary);
@@ -157,9 +145,74 @@
             margin: 0 auto 4px;
         }
 
-        .drop-zone .subtext {
+        .saved-clients-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .saved-card {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(18, 20, 29, 0.8));
+            border: 1px solid var(--accent-purple);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .saved-info h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .saved-info p {
             font-size: 12px;
-            color: var(--text-muted);
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .saved-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-play-tab {
+            background-color: #10b981;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .btn-play-page {
+            background-color: var(--accent-purple);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .btn-delete {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
         }
 
         .content-panel {
@@ -184,13 +237,30 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-height: 110px;
+            min-height: 120px;
+        }
+
+        .client-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 6px;
         }
 
         .client-card h3 {
             font-size: 14px;
             font-weight: 600;
             margin-bottom: 4px;
+        }
+
+        .badge {
+            background-color: var(--card-border);
+            color: var(--text-muted);
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            white-space: nowrap;
         }
 
         .client-card p {
@@ -209,10 +279,6 @@
             font-size: 12px;
             font-weight: 600;
             display: block;
-        }
-
-        .launch-btn:hover {
-            background-color: var(--accent-purple-hover);
         }
 
         .sidebar {
@@ -251,19 +317,6 @@
             margin-top: 2px;
         }
 
-        .server-meta {
-            text-align: right;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 4px;
-        }
-
-        .version-tag {
-            font-size: 10px;
-            color: var(--text-muted);
-        }
-
         .copy-btn {
             background: none;
             border: none;
@@ -272,12 +325,39 @@
             font-size: 14px;
         }
 
-        .copy-btn:hover {
-            color: var(--text-primary);
-        }
-
         #file-input {
             display: none;
+        }
+
+        #game-iframe-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 9999;
+        }
+
+        #game-iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .close-iframe-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10000;
         }
 
         @media (max-width: 900px) {
@@ -301,71 +381,99 @@
             <button class="action-btn" id="music-btn">🎶 Ambient Music: OFF</button>
             <button class="action-btn" id="sound-btn">🔊 Sound: ON</button>
             <button class="action-btn" id="theme-btn">🌙</button>
-            <a href="https://github.com" target="_blank" class="action-btn">GitHub</a>
+            <a href="https://github.com/saugatcho" target="_blank" rel="noopener noreferrer" class="action-btn">GitHub</a>
         </div>
     </header>
+
+    <div id="game-iframe-container">
+        <button class="close-iframe-btn" onclick="closeGameFrame()">❌ Exit Game</button>
+        <iframe id="game-iframe"></iframe>
+    </div>
 
     <div class="dashboard-grid">
         <div class="main-content">
             
             <div class="drop-zone-container">
-                <div class="section-title">📁 Local HTML Client Launcher</div>
+                <div class="section-title">📁 Local Saved HTML Clients</div>
+                
+                <div id="saved-clients-list" class="saved-clients-container"></div>
+
                 <div class="drop-zone" id="drop-zone">
-                    <div class="drop-icon">💾</div>
-                    <p>Click here or drag from your files select the file that starts with eaglercraft, it could be a file in google drive or in a folder in google drive. If it doesnt launch press launch game.</p>
-                    <span class="subtext">(Sometimes it doesnt work lol)</span>
+                    <div style="font-size:30px; margin-bottom:8px;">💾</div>
+                    <p>Click here or drag an HTML client file to save it permanently in your browser!</p>
                     <input type="file" id="file-input" accept=".html">
                 </div>
             </div>
 
             <div class="content-panel">
-                <div class="section-title">🎮 Game Versions & Protocols</div>
+                <div class="section-title">🎮 Game Versions</div>
                 <div class="card-grid">
                     <div class="client-card">
                         <div>
-                            <h3>Eaglercraft 1.5.2</h3>
+                            <div class="client-header">
+                                <h3>Eaglercraft 1.5.2</h3>
+                                <span class="badge">v1.5.2</span>
+                            </div>
                             <p>Classic lightweight release.</p>
                         </div>
                         <a href="clients/1.5.2.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
-                            <h3>EaglercraftX 1.8.8</h3>
+                            <div class="client-header">
+                                <h3>EaglercraftX 1.8.8</h3>
+                                <span class="badge">v1.8.8</span>
+                            </div>
                             <p>Standard WebGL build.</p>
                         </div>
                         <a href="clients/1.8.8.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
-                            <h3>Eaglercraft 1.12.2</h3>
+                            <div class="client-header">
+                                <h3>Eaglercraft 1.12.2</h3>
+                                <span class="badge">v1.12.2</span>
+                            </div>
                             <p>WASM modern port.</p>
                         </div>
                         <a href="clients/1.12.2.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
-                            <h3>Eaglercraft 1.14</h3>
+                            <div class="client-header">
+                                <h3>Eaglercraft 1.14</h3>
+                                <span class="badge">v1.14</span>
+                            </div>
                             <p>Experimental Dev Workspace.</p>
                         </div>
                         <a href="clients/1.14.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
-                            <h3>Eaglercraft 1.16</h3>
+                            <div class="client-header">
+                                <h3>Eaglercraft 1.16</h3>
+                                <span class="badge">v1.16</span>
+                            </div>
                             <p>Server Protocol Workspace.</p>
                         </div>
                         <a href="clients/1.16.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
-                            <h3>Eaglercraft Indev</h3>
+                            <div class="client-header">
+                                <h3>Eaglercraft Indev</h3>
+                                <span class="badge">Indev</span>
+                            </div>
                             <p>Early Minecraft port build.</p>
                         </div>
                         <a href="clients/indev.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
-                            <h3>Eaglercraft Beta</h3>
+                            <div class="client-header">
+                                <h3>Eaglercraft Beta</h3>
+                                <span class="badge">b1.7.3</span>
+                            </div>
                             <p>Offline singleplayer release.</p>
                         </div>
                         <a href="clients/beta.html" class="launch-btn">Launch</a>
@@ -374,88 +482,124 @@
             </div>
 
             <div class="content-panel">
-                <div class="section-title">⚡ Custom Clients & Utilities</div>
+                <div class="section-title">⚡ Custom Clients</div>
                 <div class="card-grid">
                     <div class="client-card">
                         <div>
-                            <h3>DeathClient</h3>
+                            <div class="client-header">
+                                <h3>DeathClient</h3>
+                                <span class="badge">v1.8.8</span>
+                            </div>
                             <p>Hybrid/utility client for 1.8.8.</p>
                         </div>
                         <a href="clients/deathclient.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
-                            <h3>Astra / Astroine</h3>
+                            <div class="client-header">
+                                <h3>Astra Client</h3>
+                                <span class="badge">v1.8.8</span>
+                            </div>
                             <p>Optimized performance client.</p>
                         </div>
                         <a href="clients/astra.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
-                            <h3>Resent Client</h3>
+                            <div class="client-header">
+                                <h3>Resent Client</h3>
+                                <span class="badge">v1.8.8</span>
+                            </div>
                             <p>Feature-rich utility client.</p>
                         </div>
                         <a href="clients/resent.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
-                            <h3>Pixel Client</h3>
+                            <div class="client-header">
+                                <h3>Pixel Client</h3>
+                                <span class="badge">v1.8.8</span>
+                            </div>
                             <p>Lightweight PvP client.</p>
                         </div>
                         <a href="clients/pixel.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
-                            <h3>Tuff Client</h3>
+                            <div class="client-header">
+                                <h3>Tuff Client</h3>
+                                <span class="badge">v1.8.8</span>
+                            </div>
                             <p>Custom HUD enhancements.</p>
                         </div>
                         <a href="clients/tuff.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
-                            <h3>Precision Client</h3>
+                            <div class="client-header">
+                                <h3>Precision Client</h3>
+                                <span class="badge">v1.8.8</span>
+                            </div>
                             <p>High FPS performance build.</p>
                         </div>
                         <a href="clients/precision.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
-                            <h3>Modern Client</h3>
+                            <div class="client-header">
+                                <h3>Modern Client</h3>
+                                <span class="badge">v1.8.8</span>
+                            </div>
                             <p>Modernized UI overlay.</p>
                         </div>
                         <a href="clients/modern.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
-                            <h3>Starlike Client</h3>
+                            <div class="client-header">
+                                <h3>Starlike Client</h3>
+                                <span class="badge">v1.8.8</span>
+                            </div>
                             <p>Clean design & visuals.</p>
                         </div>
                         <a href="clients/starlike.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
-                            <h3>Galactic Client</h3>
+                            <div class="client-header">
+                                <h3>Galactic Client</h3>
+                                <span class="badge">v1.8.8</span>
+                            </div>
                             <p>Space-themed interface.</p>
                         </div>
                         <a href="clients/galactic.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
-                            <h3>Aero Client</h3>
+                            <div class="client-header">
+                                <h3>Aero Client</h3>
+                                <span class="badge">v1.8.8</span>
+                            </div>
                             <p>Ultra-fast performance build.</p>
                         </div>
                         <a href="clients/aero.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
-                            <h3>EB Client</h3>
+                            <div class="client-header">
+                                <h3>EB Client</h3>
+                                <span class="badge">v1.8.8</span>
+                            </div>
                             <p>Enhanced Bedrock features.</p>
                         </div>
                         <a href="clients/ebclient.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
-                            <h3>EaglerFORGE</h3>
+                            <div class="client-header">
+                                <h3>EaglerFORGE</h3>
+                                <span class="badge">v1.8.8</span>
+                            </div>
                             <p>Modding API client platform.</p>
                         </div>
                         <a href="clients/eaglerforge.html" class="launch-btn">Launch</a>
@@ -473,57 +617,42 @@
                         <h4>Aethernet</h4>
                         <p>wss://aethernet.kro.kr</p>
                     </div>
-                    <div class="server-meta">
-                        <span class="version-tag">1.8.8</span>
-                        <button class="copy-btn" onclick="copyServer('wss://aethernet.kro.kr')">📋</button>
-                    </div>
+                    <button class="copy-btn" onclick="copyServer('wss://aethernet.kro.kr')">📋</button>
                 </div>
                 <div class="server-item">
                     <div class="server-info">
                         <h4>Asapixel Network</h4>
                         <p>wss://asspixel.net</p>
                     </div>
-                    <div class="server-meta">
-                        <span class="version-tag">1.8.8</span>
-                        <button class="copy-btn" onclick="copyServer('wss://asspixel.net')">📋</button>
-                    </div>
+                    <button class="copy-btn" onclick="copyServer('wss://asspixel.net')">📋</button>
                 </div>
                 <div class="server-item">
                     <div class="server-info">
                         <h4>ArchMC</h4>
                         <p>wss://arch.mc</p>
                     </div>
-                    <div class="server-meta">
-                        <span class="version-tag">1.8.8</span>
-                        <button class="copy-btn" onclick="copyServer('wss://arch.mc')">📋</button>
-                    </div>
+                    <button class="copy-btn" onclick="copyServer('wss://arch.mc')">📋</button>
                 </div>
                 <div class="server-item">
                     <div class="server-info">
                         <h4>Voidsent MC</h4>
                         <p>wss://mc.voidsent.net</p>
                     </div>
-                    <div class="server-meta">
-                        <span class="version-tag">1.8.8</span>
-                        <button class="copy-btn" onclick="copyServer('wss://mc.voidsent.net')">📋</button>
-                    </div>
+                    <button class="copy-btn" onclick="copyServer('wss://mc.voidsent.net')">📋</button>
                 </div>
                 <div class="server-item">
                     <div class="server-info">
                         <h4>BagelSMP</h4>
                         <p>wss://top.bagelsmp.com</p>
                     </div>
-                    <div class="server-meta">
-                        <span class="version-tag">1.8.8</span>
-                        <button class="copy-btn" onclick="copyServer('wss://top.bagelsmp.com')">📋</button>
-                    </div>
+                    <button class="copy-btn" onclick="copyServer('wss://top.bagelsmp.com')">📋</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Interactive UI Controls
+        // Interactive Controls
         let soundEnabled = true;
         let musicPlaying = false;
         let audioCtx = null;
@@ -533,14 +662,12 @@
         const musicBtn = document.getElementById('music-btn');
         const themeBtn = document.getElementById('theme-btn');
 
-        // Sound Toggle
         soundBtn.addEventListener('click', () => {
             soundEnabled = !soundEnabled;
             soundBtn.textContent = soundEnabled ? '🔊 Sound: ON' : '🔇 Sound: OFF';
             if (soundEnabled) playClickSound();
         });
 
-        // Theme Toggle (Dark/Light)
         themeBtn.addEventListener('click', () => {
             const currentTheme = document.body.getAttribute('data-theme');
             if (currentTheme === 'light') {
@@ -553,11 +680,9 @@
             if (soundEnabled) playClickSound();
         });
 
-        // Ambient Music Generator (Synthetic 8-bit chords)
         musicBtn.addEventListener('click', () => {
             musicPlaying = !musicPlaying;
             musicBtn.textContent = musicPlaying ? '🎶 Ambient Music: ON' : '🎶 Ambient Music: OFF';
-            
             if (musicPlaying) {
                 if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 startAmbientMusic();
@@ -567,7 +692,7 @@
         });
 
         function startAmbientMusic() {
-            const notes = [261.63, 329.63, 392.00, 523.25, 440.00]; // C, E, G, C5, A
+            const notes = [261.63, 329.63, 392.00, 523.25, 440.00];
             musicInterval = setInterval(() => {
                 if (!musicPlaying) return;
                 let osc = audioCtx.createOscillator();
@@ -605,14 +730,22 @@
             } catch (e) {}
         }
 
-        // Server IP Copy
-        function copyServer(ip) {
-            navigator.clipboard.writeText(ip);
-            if (soundEnabled) playClickSound();
-            alert('Copied IP: ' + ip);
-        }
+        // IndexedDB Storage
+        let db;
+        const request = indexedDB.open("EaglercraftLauncherDB", 1);
 
-        // Drag & Drop / File Input
+        request.onupgradeneeded = (e) => {
+            db = e.target.result;
+            if (!db.objectStoreNames.contains("saved_clients")) {
+                db.createObjectStore("saved_clients", { keyPath: "name" });
+            }
+        };
+
+        request.onsuccess = (e) => {
+            db = e.target.result;
+            loadSavedClients();
+        };
+
         const dropZone = document.getElementById('drop-zone');
         const fileInput = document.getElementById('file-input');
 
@@ -620,28 +753,101 @@
 
         fileInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
-            if (file) launchLocalFile(file);
+            if (file) saveLocalFile(file);
         });
 
-        dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropZone.style.borderColor = '#8b5cf6';
-        });
+        function saveLocalFile(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const clientData = {
+                    name: file.name,
+                    size: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
+                    content: e.target.result
+                };
 
-        dropZone.addEventListener('dragleave', () => {
-            dropZone.style.borderColor = 'var(--card-border)';
-        });
+                const tx = db.transaction("saved_clients", "readwrite");
+                const store = tx.objectStore("saved_clients");
+                store.put(clientData);
 
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.style.borderColor = 'var(--card-border)';
-            const file = e.dataTransfer.files[0];
-            if (file && file.name.endsWith('.html')) launchLocalFile(file);
-        });
+                tx.oncomplete = () => {
+                    loadSavedClients();
+                };
+            };
+            reader.readAsText(file);
+        }
 
-        function launchLocalFile(file) {
-            const url = URL.createObjectURL(file);
-            window.location.href = url;
+        function loadSavedClients() {
+            const container = document.getElementById('saved-clients-list');
+            container.innerHTML = '';
+
+            const tx = db.transaction("saved_clients", "readonly");
+            const store = tx.objectStore("saved_clients");
+            const getRequest = store.getAll();
+
+            getRequest.onsuccess = () => {
+                const clients = getRequest.result;
+                clients.forEach(client => {
+                    const card = document.createElement('div');
+                    card.className = 'saved-card';
+                    card.innerHTML = `
+                        <div class="saved-info">
+                            <h3>▶ ${client.name}</h3>
+                            <p>Saved Client (${client.size}) • Ready for Instant Play</p>
+                        </div>
+                        <div class="saved-actions">
+                            <button class="btn-play-tab" onclick="playInNewTab('${client.name}')">NEW TAB</button>
+                            <button class="btn-play-page" onclick="playInPage('${client.name}')">PLAY IN-PAGE</button>
+                            <button class="btn-delete" onclick="deleteClient('${client.name}')">🗑</button>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            };
+        }
+
+        function playInNewTab(name) {
+            const tx = db.transaction("saved_clients", "readonly");
+            const store = tx.objectStore("saved_clients");
+            const req = store.get(name);
+            req.onsuccess = () => {
+                const win = window.open();
+                win.document.write(req.result.content);
+                win.document.close();
+            };
+        }
+
+        function playInPage(name) {
+            const tx = db.transaction("saved_clients", "readonly");
+            const store = tx.objectStore("saved_clients");
+            const req = store.get(name);
+            req.onsuccess = () => {
+                const iframe = document.getElementById('game-iframe');
+                const iframeContainer = document.getElementById('game-iframe-container');
+                iframe.contentWindow.document.open();
+                iframe.contentWindow.document.write(req.result.content);
+                iframe.contentWindow.document.close();
+                iframeContainer.style.display = 'block';
+            };
+        }
+
+        function closeGameFrame() {
+            const iframeContainer = document.getElementById('game-iframe-container');
+            const iframe = document.getElementById('game-iframe');
+            iframe.src = 'about:blank';
+            iframeContainer.style.display = 'none';
+        }
+
+        function deleteClient(name) {
+            const tx = db.transaction("saved_clients", "readwrite");
+            const store = tx.objectStore("saved_clients");
+            store.delete(name);
+            tx.oncomplete = () => loadSavedClients();
+        }
+
+        function copyServer(ip) {
+            navigator.clipboard.writeText(ip);
+            if (soundEnabled) playClickSound();
+            alert('Copied IP: ' + ip);
         }
     </script>
 </body>
