@@ -17,11 +17,22 @@
             --text-muted: #6b7280;
         }
 
+        [data-theme="light"] {
+            --bg-color: #f3f4f6;
+            --panel-bg: #ffffff;
+            --card-bg: #f9fafb;
+            --card-border: #e5e7eb;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --text-muted: #9ca3af;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
         }
 
         body {
@@ -31,12 +42,13 @@
             min-height: 100vh;
         }
 
-        /* Top Navigation Bar */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
         }
 
         .brand {
@@ -53,7 +65,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
             font-size: 20px;
         }
 
@@ -69,20 +80,22 @@
 
         .header-actions {
             display: flex;
-            gap: 12px;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .action-btn {
             background-color: var(--panel-bg);
             border: 1px solid var(--card-border);
             color: var(--text-secondary);
-            padding: 8px 16px;
+            padding: 8px 14px;
             border-radius: 20px;
             font-size: 13px;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 6px;
+            text-decoration: none;
         }
 
         .action-btn:hover {
@@ -90,7 +103,6 @@
             border-color: var(--accent-purple);
         }
 
-        /* Layout Grid */
         .dashboard-grid {
             display: grid;
             grid-template-columns: 1fr 320px;
@@ -106,7 +118,6 @@
             gap: 8px;
         }
 
-        /* Drop Area */
         .drop-zone-container {
             background-color: var(--panel-bg);
             border: 1px solid var(--card-border);
@@ -116,12 +127,11 @@
         }
 
         .drop-zone {
-            border: 2px dashed #2d3248;
+            border: 2px dashed var(--card-border);
             border-radius: 8px;
             padding: 28px;
             text-align: center;
             cursor: pointer;
-            transition: border-color 0.2s;
         }
 
         .drop-zone:hover {
@@ -152,7 +162,6 @@
             color: var(--text-muted);
         }
 
-        /* Main Content Cards */
         .content-panel {
             background-color: var(--panel-bg);
             border: 1px solid var(--card-border);
@@ -200,14 +209,12 @@
             font-size: 12px;
             font-weight: 600;
             display: block;
-            transition: background 0.2s;
         }
 
         .launch-btn:hover {
             background-color: var(--accent-purple-hover);
         }
 
-        /* Right Sidebar - Servers */
         .sidebar {
             background-color: var(--panel-bg);
             border: 1px solid var(--card-border);
@@ -282,7 +289,6 @@
 </head>
 <body>
 
-    <!-- Header Navigation -->
     <header>
         <div class="brand">
             <div class="logo-icon">🟩</div>
@@ -292,21 +298,19 @@
             </div>
         </div>
         <div class="header-actions">
-            <button class="action-btn">🎶 Ambient Music: OFF</button>
-            <button class="action-btn">🔊 Sound: ON</button>
-            <button class="action-btn">🌙</button>
-            <button class="action-btn">GitHub</button>
+            <button class="action-btn" id="music-btn">🎶 Ambient Music: OFF</button>
+            <button class="action-btn" id="sound-btn">🔊 Sound: ON</button>
+            <button class="action-btn" id="theme-btn">🌙</button>
+            <a href="https://github.com" target="_blank" class="action-btn">GitHub</a>
         </div>
     </header>
 
     <div class="dashboard-grid">
-        <!-- Main Launch Column -->
         <div class="main-content">
             
-            <!-- Drag & Drop Upload Zone -->
             <div class="drop-zone-container">
                 <div class="section-title">📁 Local HTML Client Launcher</div>
-                <div class="drop-zone" onclick="document.getElementById('file-input').click()">
+                <div class="drop-zone" id="drop-zone">
                     <div class="drop-icon">💾</div>
                     <p>Click here or drag from your files select the file that starts with eaglercraft, it could be a file in google drive or in a folder in google drive. If it doesnt launch press launch game.</p>
                     <span class="subtext">(Sometimes it doesnt work lol)</span>
@@ -314,7 +318,6 @@
                 </div>
             </div>
 
-            <!-- Main Official Game Versions -->
             <div class="content-panel">
                 <div class="section-title">🎮 Game Versions & Protocols</div>
                 <div class="card-grid">
@@ -323,54 +326,53 @@
                             <h3>Eaglercraft 1.5.2</h3>
                             <p>Classic lightweight release.</p>
                         </div>
-                        <a href="1.5.2.html" class="launch-btn">Launch</a>
+                        <a href="clients/1.5.2.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
                             <h3>EaglercraftX 1.8.8</h3>
                             <p>Standard WebGL build.</p>
                         </div>
-                        <a href="1.8.8.html" class="launch-btn">Launch</a>
+                        <a href="clients/1.8.8.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
                             <h3>Eaglercraft 1.12.2</h3>
                             <p>WASM modern port.</p>
                         </div>
-                        <a href="1.12.2.html" class="launch-btn">Launch</a>
+                        <a href="clients/1.12.2.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
                             <h3>Eaglercraft 1.14</h3>
                             <p>Experimental Dev Workspace.</p>
                         </div>
-                        <a href="1.14.html" class="launch-btn">Launch</a>
+                        <a href="clients/1.14.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
                             <h3>Eaglercraft 1.16</h3>
                             <p>Server Protocol Workspace.</p>
                         </div>
-                        <a href="1.16.html" class="launch-btn">Launch</a>
+                        <a href="clients/1.16.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
                             <h3>Eaglercraft Indev</h3>
                             <p>Early Minecraft port build.</p>
                         </div>
-                        <a href="indev.html" class="launch-btn">Launch</a>
+                        <a href="clients/indev.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
                             <h3>Eaglercraft Beta</h3>
                             <p>Offline singleplayer release.</p>
                         </div>
-                        <a href="beta.html" class="launch-btn">Launch</a>
+                        <a href="clients/beta.html" class="launch-btn">Launch</a>
                     </div>
                 </div>
             </div>
 
-            <!-- Custom Clients -->
             <div class="content-panel">
                 <div class="section-title">⚡ Custom Clients & Utilities</div>
                 <div class="card-grid">
@@ -379,91 +381,90 @@
                             <h3>DeathClient</h3>
                             <p>Hybrid/utility client for 1.8.8.</p>
                         </div>
-                        <a href="deathclient.html" class="launch-btn">Launch</a>
+                        <a href="clients/deathclient.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
                             <h3>Astra / Astroine</h3>
                             <p>Optimized performance client.</p>
                         </div>
-                        <a href="astra.html" class="launch-btn">Launch</a>
+                        <a href="clients/astra.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
                             <h3>Resent Client</h3>
                             <p>Feature-rich utility client.</p>
                         </div>
-                        <a href="resent.html" class="launch-btn">Launch</a>
+                        <a href="clients/resent.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
                             <h3>Pixel Client</h3>
                             <p>Lightweight PvP client.</p>
                         </div>
-                        <a href="pixel.html" class="launch-btn">Launch</a>
+                        <a href="clients/pixel.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
                             <h3>Tuff Client</h3>
                             <p>Custom HUD enhancements.</p>
                         </div>
-                        <a href="tuff.html" class="launch-btn">Launch</a>
+                        <a href="clients/tuff.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
                             <h3>Precision Client</h3>
                             <p>High FPS performance build.</p>
                         </div>
-                        <a href="precision.html" class="launch-btn">Launch</a>
+                        <a href="clients/precision.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
                             <h3>Modern Client</h3>
                             <p>Modernized UI overlay.</p>
                         </div>
-                        <a href="modern.html" class="launch-btn">Launch</a>
+                        <a href="clients/modern.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
                             <h3>Starlike Client</h3>
                             <p>Clean design & visuals.</p>
                         </div>
-                        <a href="starlike.html" class="launch-btn">Launch</a>
+                        <a href="clients/starlike.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
                             <h3>Galactic Client</h3>
                             <p>Space-themed interface.</p>
                         </div>
-                        <a href="galactic.html" class="launch-btn">Launch</a>
+                        <a href="clients/galactic.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
                             <h3>Aero Client</h3>
                             <p>Ultra-fast performance build.</p>
                         </div>
-                        <a href="aero.html" class="launch-btn">Launch</a>
+                        <a href="clients/aero.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
                             <h3>EB Client</h3>
                             <p>Enhanced Bedrock features.</p>
                         </div>
-                        <a href="ebclient.html" class="launch-btn">Launch</a>
+                        <a href="clients/ebclient.html" class="launch-btn">Launch</a>
                     </div>
                     <div class="client-card">
                         <div>
                             <h3>EaglerFORGE</h3>
                             <p>Modding API client platform.</p>
                         </div>
-                        <a href="eaglerforge.html" class="launch-btn">Launch</a>
+                        <a href="clients/eaglerforge.html" class="launch-btn">Launch</a>
                     </div>
                 </div>
             </div>
 
         </div>
 
-        <!-- Right Server Sidebar -->
         <div class="sidebar">
             <div class="section-title">Servers</div>
             <div class="server-list">
@@ -474,7 +475,7 @@
                     </div>
                     <div class="server-meta">
                         <span class="version-tag">1.8.8</span>
-                        <button class="copy-btn" onclick="navigator.clipboard.writeText('wss://aethernet.kro.kr')">📋</button>
+                        <button class="copy-btn" onclick="copyServer('wss://aethernet.kro.kr')">📋</button>
                     </div>
                 </div>
                 <div class="server-item">
@@ -484,7 +485,7 @@
                     </div>
                     <div class="server-meta">
                         <span class="version-tag">1.8.8</span>
-                        <button class="copy-btn" onclick="navigator.clipboard.writeText('wss://asspixel.net')">📋</button>
+                        <button class="copy-btn" onclick="copyServer('wss://asspixel.net')">📋</button>
                     </div>
                 </div>
                 <div class="server-item">
@@ -494,7 +495,7 @@
                     </div>
                     <div class="server-meta">
                         <span class="version-tag">1.8.8</span>
-                        <button class="copy-btn" onclick="navigator.clipboard.writeText('wss://arch.mc')">📋</button>
+                        <button class="copy-btn" onclick="copyServer('wss://arch.mc')">📋</button>
                     </div>
                 </div>
                 <div class="server-item">
@@ -504,7 +505,7 @@
                     </div>
                     <div class="server-meta">
                         <span class="version-tag">1.8.8</span>
-                        <button class="copy-btn" onclick="navigator.clipboard.writeText('wss://mc.voidsent.net')">📋</button>
+                        <button class="copy-btn" onclick="copyServer('wss://mc.voidsent.net')">📋</button>
                     </div>
                 </div>
                 <div class="server-item">
@@ -514,7 +515,7 @@
                     </div>
                     <div class="server-meta">
                         <span class="version-tag">1.8.8</span>
-                        <button class="copy-btn" onclick="navigator.clipboard.writeText('wss://top.bagelsmp.com')">📋</button>
+                        <button class="copy-btn" onclick="copyServer('wss://top.bagelsmp.com')">📋</button>
                     </div>
                 </div>
             </div>
@@ -522,9 +523,100 @@
     </div>
 
     <script>
-        // Local File Drag & Drop Engine
-        const dropZone = document.querySelector('.drop-zone');
+        // Interactive UI Controls
+        let soundEnabled = true;
+        let musicPlaying = false;
+        let audioCtx = null;
+        let musicInterval = null;
+
+        const soundBtn = document.getElementById('sound-btn');
+        const musicBtn = document.getElementById('music-btn');
+        const themeBtn = document.getElementById('theme-btn');
+
+        // Sound Toggle
+        soundBtn.addEventListener('click', () => {
+            soundEnabled = !soundEnabled;
+            soundBtn.textContent = soundEnabled ? '🔊 Sound: ON' : '🔇 Sound: OFF';
+            if (soundEnabled) playClickSound();
+        });
+
+        // Theme Toggle (Dark/Light)
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = document.body.getAttribute('data-theme');
+            if (currentTheme === 'light') {
+                document.body.removeAttribute('data-theme');
+                themeBtn.textContent = '🌙';
+            } else {
+                document.body.setAttribute('data-theme', 'light');
+                themeBtn.textContent = '☀️';
+            }
+            if (soundEnabled) playClickSound();
+        });
+
+        // Ambient Music Generator (Synthetic 8-bit chords)
+        musicBtn.addEventListener('click', () => {
+            musicPlaying = !musicPlaying;
+            musicBtn.textContent = musicPlaying ? '🎶 Ambient Music: ON' : '🎶 Ambient Music: OFF';
+            
+            if (musicPlaying) {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                startAmbientMusic();
+            } else {
+                stopAmbientMusic();
+            }
+        });
+
+        function startAmbientMusic() {
+            const notes = [261.63, 329.63, 392.00, 523.25, 440.00]; // C, E, G, C5, A
+            musicInterval = setInterval(() => {
+                if (!musicPlaying) return;
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.value = notes[Math.floor(Math.random() * notes.length)];
+                gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 2);
+            }, 1200);
+        }
+
+        function stopAmbientMusic() {
+            clearInterval(musicInterval);
+        }
+
+        function playClickSound() {
+            if (!soundEnabled) return;
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.08);
+            } catch (e) {}
+        }
+
+        // Server IP Copy
+        function copyServer(ip) {
+            navigator.clipboard.writeText(ip);
+            if (soundEnabled) playClickSound();
+            alert('Copied IP: ' + ip);
+        }
+
+        // Drag & Drop / File Input
+        const dropZone = document.getElementById('drop-zone');
         const fileInput = document.getElementById('file-input');
+
+        dropZone.addEventListener('click', () => fileInput.click());
 
         fileInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
@@ -537,16 +629,14 @@
         });
 
         dropZone.addEventListener('dragleave', () => {
-            dropZone.style.borderColor = '#2d3248';
+            dropZone.style.borderColor = 'var(--card-border)';
         });
 
         dropZone.addEventListener('drop', (e) => {
             e.preventDefault();
-            dropZone.style.borderColor = '#2d3248';
+            dropZone.style.borderColor = 'var(--card-border)';
             const file = e.dataTransfer.files[0];
-            if (file && file.name.endsWith('.html')) {
-                launchLocalFile(file);
-            }
+            if (file && file.name.endsWith('.html')) launchLocalFile(file);
         });
 
         function launchLocalFile(file) {
