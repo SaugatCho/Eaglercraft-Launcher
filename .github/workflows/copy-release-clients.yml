@@ -1,0 +1,34 @@
+name: Copy release clients
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  copy-clients:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download release clients
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p clients
+          gh release download clients-v1 \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern "*.html" \
+            --dir clients \
+            --clobber
+
+      - name: Commit clients
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add clients/*.html
+          git diff --cached --quiet || git commit -m "Add remaining clients"
+          git push
