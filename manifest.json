@@ -1,0 +1,18 @@
+{
+  "name": "Eaglercraft Launcher",
+  "short_name": "Eaglercraft",
+  "description": "A browser-based Eaglercraft launcher and local client manager.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b0c10",
+  "theme_color": "#0b0c10",
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
